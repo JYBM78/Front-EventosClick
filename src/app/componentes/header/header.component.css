@@ -1,0 +1,22 @@
+.nav-link {
+    padding: 5px 10px; /* Reduce el espacio interior */
+    font-size: 0.85rem; /* Ajusta el tamaño de texto */
+  }
+  
+  .nav-pills .nav-link.active {
+    background-color: #007bff; /* Cambia el color del botón activo */
+    color: white;
+  }
+  
+  .nav-item {
+    margin: 0 5px; /* Ajusta el espacio entre botones */
+  }
+  span.text-muted {
+    font-size: 0.9rem; /* Tamaño más pequeño para el texto */
+    font-weight: 500;  /* Negrita media */
+  }
+  
+  button.btn-sm {
+    padding: 0.25rem 0.5rem; /* Reduce el tamaño del botón */
+  }
+  

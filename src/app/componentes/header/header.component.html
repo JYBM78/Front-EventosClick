@@ -1,0 +1,43 @@
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+      <div class="col-md-3 mb-2 mb-md-0">
+        <a routerLink="" class="d-inline-flex link-body-emphasis text-decoration-none align-items-center">
+          <i class="fa-solid fa-ticket fs-3"></i>
+          <span class="fs-4 ms-3 me-3">{{title}}</span>
+        </a>
+      </div>
+
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 nav-pills small">
+        <li class="nav-item">
+          <a routerLink="" class="nav-link text-center">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/gestion-eventos" class="nav-link text-center">Gestión de eventos</a>
+        </li>
+       
+        <li class="nav-item">
+          <a routerLink="/carrito" class="nav-link text-center">
+            <i class="fas fa-shopping-cart"></i> <!-- Icono de carrito -->
+          </a>
+        </li>
+        
+       
+      </ul>
+      
+        <div class="col-md-3 d-flex text-end align-items-center">
+          @if (!isLogged) {
+          <button type="button" routerLink="/login" class="btn btn-outline-primary me-2">Login</button>
+          <button type="button" routerLink="/registro" class="btn btn-primary">Registro</button>
+          }@else {
+          <label class="me-3">{{correo}}</label>
+
+          <button type="button" [routerLink]="['/obtener-info-cuenta', IdCuenta]" class="btn btn-outline-primary btn-sm">Perfil</button>
+
+          <button type="button" (click)="logout()" class="btn btn-outline-danger btn-sm ms-2">Cerrar sesión</button>
+          
+          }
+         </div>
+
+    </header>
+  </div>
