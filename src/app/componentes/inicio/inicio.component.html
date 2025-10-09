@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniEventos - Inicio</title>
+
+  <!-- Bootstrap y Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* ===== Estilos generales ===== */
+    body {
+      background-color: #fff;
+      color: #222;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    h2 {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ===== Carrusel ===== */
+    .carousel-item img {
+      height: 480px;
+      object-fit: cover;
+    }
+
+    /* ===== Sección de búsqueda ===== */
+    .search-bar {
+      background-color: #3b27f1;
+      color: #fff;
+      padding: 1rem;
+    }
+
+    .search-bar input,
+    .search-bar select {
+      border-radius: 10px;
+    }
+
+    /* ===== Tarjetas de eventos ===== */
+    .card {
+      border: none;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .btn-comprar {
+      background-color: #3b27f1;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 6px;
+    }
+
+    .btn-comprar:hover {
+      background-color: #2a1cc7;
+    }
+
+    /* ===== Modal de preferencias ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .tags .btn.selected {
+      background-color: #3b27f1;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Carrusel -->
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <!-- Tu contenido de carrusel -->
+  </div>
+
+  <!-- Barra de búsqueda -->
+  <div class="search-bar text-center">
+    <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3">
+      <select [(ngModel)]="selectedCiudad" class="form-select w-auto">
+        <option value="">Ciudad</option>
+        <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad }}</option>
+      </select>
+
+      <input type="date" [(ngModel)]="selectedFecha" class="form-control w-auto">
+
+      <select [(ngModel)]="selectedEvento" class="form-select w-auto">
+        <option value="">Evento</option>
+        <option *ngFor="let evento of eventos" [value]="evento.nombre">{{ evento.nombre }}</option>
+      </select>
+
+      <button class="btn btn-light fw-bold" (click)="filtrarEventos()">
+        <i class="fas fa-search"></i> Buscar
+      </button>
+    </div>
+  </div>
+
+  <!-- Sección: Recomendados -->
+  <div class="container my-5">
+    <h2 class="text-uppercase">Recomendados</h2>
+    <div class="row">
+      <div *ngFor="let item of eventos | slice:0:3" class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm" [routerLink]="['/detalle-evento', item.id]" style="cursor: pointer;">
+          <img [src]="item.urlImagenPoster" class="card-img-top" alt="{{ item.nombre }}">
+          <div class="card-body text-start">
+            <h5 class="fw-bold">{{ item.nombre }}</h5>
+            <p class="mb-1">{{ item.ciudad }}</p>
+            <p class="text-muted">{{ item.fecha | date: 'dd MMMM yyyy' }}</p>
+            <button class="btn btn-comprar">Comprar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección: Próximos eventos -->
+  <div class="container my-5">
+    <h2 class="text-uppercase">Próximos eventos</h2>
+    <div class="row">
+      <div *ngFor="let item of eventos" class="col-md-3 mb-4">
+        <div class="card h-100 shadow-sm" [routerLink]="['/detalle-evento', item.id]" style="cursor: pointer;">
+          <img [src]="item.urlImagenPoster" class="card-img-top" alt="{{ item.nombre }}">
+          <div class="card-body text-start">
+            <h6 class="fw-bold">{{ item.nombre }}</h6>
+            <small class="text-muted">{{ item.ciudad }} - {{ item.fecha | date: 'dd/MM/yyyy' }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de preferencias -->
+  <div *ngIf="mostrarVentanaPreferencias" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Intereses</h2>
+      <p>Elige los eventos que te gustaría ver para sugerencias personalizadas.</p>
+
+      <div class="tags">
+        <button *ngFor="let tipo of tiposEvento"
+                (click)="toggleSeleccion(tipo)"
+                [class.selected]="estaSeleccionado(tipo)"
+                class="btn btn-outline-primary me-2 mt-2">
+          {{ tipo }}
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4 gap-2">
+        <button (click)="guardarPreferencias()" class="btn btn-primary">Guardar</button>
+        <button (click)="cerrarVentanaPreferencias()" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
