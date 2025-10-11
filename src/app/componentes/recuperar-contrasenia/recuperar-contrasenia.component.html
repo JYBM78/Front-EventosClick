@@ -1,0 +1,28 @@
+<div class=" d-flex justify-content-center align-items-center " style="min-height: 75vh;">
+    <div class="col-md-6 col-lg-4 p-4 border rounded text-center position-relative">
+      <h5 class="fw-bold mb-3">¿No recuerdas tu contraseña?</h5>
+      <p class="mb-4">¡No te preocupes! Nos sucede a todos. Ingresa tu email y nosotros te ayudamos.</p>
+      
+      <form [formGroup]="recuperarContraseniaForm" (ngSubmit)="validar()" class="p-4">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{'is-invalid': recuperarContraseniaForm.get('email')?.invalid && recuperarContraseniaForm.get('email')?.touched}"
+          />
+          <div *ngIf="recuperarContraseniaForm.get('email')?.invalid && recuperarContraseniaForm.get('email')?.touched" class="invalid-feedback">
+            <small *ngIf="recuperarContraseniaForm.get('email')?.errors?.['required']">El email es obligatorio.</small>
+            <small *ngIf="recuperarContraseniaForm.get('email')?.errors?.['email']">Ingrese un email válido.</small>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-sm px-4">Enviar</button>
+      </form>
+  
+      <button type="button" routerLink="/login" class="btn btn-secondary btn-sm position-absolute" style="bottom: 20px; left: 20px;">Salir</button>
+    </div>
+</div>
+  

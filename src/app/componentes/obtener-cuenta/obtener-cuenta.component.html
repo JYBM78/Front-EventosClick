@@ -1,0 +1,54 @@
+
+  <form [formGroup]="editarCuentaForm" (ngSubmit)="editarCuenta()" class="container mt-4">
+
+          <div class="col-6">
+  
+        <label class="form-label">Cédula: </label>
+        <input type="text" class="form-control" formControlName="cedula" />
+       </div>
+       <div class="col-6">
+        <label class="form-label">Nombre: </label>
+        <input type="text" class="form-control" formControlName="nombre" />
+       </div>
+       <div class="col-6">
+        <label class="form-label">Email: </label>
+        <input type="email" class="form-control" formControlName="correo" />
+      </div>
+      <div class="col-6">
+        <label class="form-label">Dirección: </label>
+        <input type="text" class="form-control" formControlName="direccion" />
+      </div>
+      <div class="col-6">
+        <label class="form-label">Teléfono: </label>
+        <input type="number" class="form-control" formControlName="telefono" />
+      </div>
+      <div class="col-6">
+        <label class="form-label">Contraseña: </label>
+        <input type="password" class="form-control" formControlName="password" />
+      </div>
+      <div class="col-6">
+          <label class="form-label">Repetir contraseña: </label>
+          <input type="password" class="form-control" formControlName="confirmaPassword" />
+        </div>
+        @if (editarCuentaForm.hasError('passwordsMismatch')) {
+          <div class="alert alert-danger" role="alert" >Las contraseñas no coinciden</div>
+         }
+  
+  
+         <div class="col-12 text-center">
+          <button type="button" [routerLink]="['/editar-cuenta', obtenerIdCuenta()]" class="btn btn-primary">Editar Perfil</button>
+          <button type="button" [routerLink]="['/cambiar-contrasenia',obtenerIdCuenta()]" class="btn btn-primary">Cambiar Contraseña</button>
+          <button type="button" [routerLink]="['/historial-compras', obtenerIdCuenta()]" class="btn btn-primary">Historial</button>
+          <button type="button" [routerLink]="['/gestion-mis-boletas']" class="btn btn-primary">Boletas</button>
+        </div>
+        <div class="col-12 text-center">
+          <!-- Otros botones -->
+          <button type="button" (click)="inactivarCuenta()" class="btn btn-danger">Inactivar Cuenta</button>
+        </div>
+        
+       
+        
+  
+    </form>
+  
+  

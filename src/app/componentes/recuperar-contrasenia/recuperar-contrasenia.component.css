@@ -1,0 +1,11 @@
+.container-form {
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  .btn-exit {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+  

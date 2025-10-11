@@ -1,0 +1,100 @@
+<form [formGroup]="crearEventoForm" (ngSubmit)="editarEvento()" class="container mt-4">
+    <!-- Campo ID (Oculto) -->
+<div class="mb-3" style="display: none;">
+  <label class="form-label">ID:</label>
+  <input type="text" class="form-control" formControlName="id" placeholder="ID del cupón" />
+</div>
+  <!-- Campo Nombre -->
+  <div class="mb-3">
+      <label class="form-label">Nombre:</label>
+      <textarea class="form-control" formControlName="nombre" rows="3"></textarea>
+  </div>
+
+  <!-- Campo Descripción -->
+  <div class="mb-3">
+      <label class="form-label">Descripción:</label>
+      <textarea class="form-control" formControlName="descripcion" rows="3"></textarea>
+  </div>
+
+  <!-- Campo Tipo -->
+  <div class="mb-3">
+      <label class="form-label">Tipo:</label>
+      <select formControlName="tipo" class="form-select">
+          <option value="">Seleccione un tipo evento</option>
+          <option *ngFor="let item of tiposDeEvento" [value]="item">{{ item }}</option>
+      </select>
+  </div>
+
+  <!-- Campo Dirección 
+  <div class="mb-3">
+      <label class="form-label">Dirección:</label>
+      <input type="text" class="form-control" formControlName="direccion"/>
+  </div>-->
+
+  <!-- Campo Fecha del Evento -->
+  <div class="mb-3">
+      <label class="form-label">Fecha del Evento:</label>
+      <input type="date" class="form-control" formControlName="fechaEvento"/>
+  </div>
+
+  <!-- Campo Ciudad -->
+  <div class="mb-3">
+      <label class="form-label">Ciudad:</label>
+      <select formControlName="ciudad" class="form-select">
+          <option value="">Seleccione una ciudad</option>
+          <option *ngFor="let item of ciudades" [value]="item">{{ item }}</option>
+      </select>
+  </div>
+
+  <!-- Campo Localidades -->
+  <div formArrayName="localidades" class="mb-3">
+      <label class="form-label">Localidades:</label>
+      <button type="button" class="btn btn-primary btn-sm mb-2" (click)="agregarLocalidad()">Agregar localidad</button>
+      
+      <div *ngFor="let localidad of localidades.controls; let i = index" [formGroupName]="i" class="mb-2">
+          <div class="input-group mb-2">
+              <!-- Campo Nombre Localidad -->
+              <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre de la localidad"/>
+              
+              <!-- Campo Precio Localidad -->
+              <input type="number" class="form-control" formControlName="precio" placeholder="Precio"/>
+              
+              <!-- Campo Capacidad Máxima Localidad -->
+              <input type="number" class="form-control" formControlName="capacidadMaxima" placeholder="Capacidad máxima"/>
+
+              <!-- Botón Eliminar Localidad -->
+              <button type="button" class="btn btn-danger" (click)="eliminarLocalidad(i)">Eliminar</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Campo Imagen Portada -->
+  <div class="mb-3">
+      <label class="form-label">Imagen Portada:</label>
+      <div class="d-flex gap-2">
+          <input type="file" (change)="onFileChange($event, 'portada')" class="form-control" />
+          <button type="button" class="btn btn-primary" (click)="subirImagen('portada')">
+              <i class="fa-solid fa-cloud-arrow-up"></i> actualizar localidad
+          </button>
+          <img src="{{crearEventoForm.get('imagenPortada')?.value}}" width="100px" />
+      </div>
+  </div>
+
+  <!-- Campo Imagen Localidades -->
+  <div class="mb-3">
+      <label class="form-label">Imagen Localidades:</label>
+      <div class="d-flex gap-2">
+          <input type="file" (change)="onFileChange($event, 'localidades')" class="form-control" />
+          <button type="button" class="btn btn-primary" (click)="subirImagen('localidades')">
+              <i class="fa-solid fa-cloud-arrow-up"></i> actualizar localidad
+          </button>
+          <img src="{{crearEventoForm.get('imagenLocalidades')?.value}}" width="100px" />
+      </div>
+  </div>
+
+  <!-- Botón Crear Evento -->
+  <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary">Editar evento</button>
+  </div>
+
+</form>

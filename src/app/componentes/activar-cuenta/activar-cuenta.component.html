@@ -1,0 +1,31 @@
+<div class="container d-flex justify-content-center align-items-center vh-10">
+  <form class="row g-3" [formGroup]="formulario" >
+    <h4 class="mb-3"><i class="bi bi-check-circle"></i> Activar cuenta</h4>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email:</label>
+      <input
+        id="email"
+        type="email"
+        class="form-control"
+        placeholder="Ingrese su email"
+        formControlName="email"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="codigo" class="form-label">Código:</label>
+      <input
+        id="codigo"
+        type="text"
+        class="form-control"
+        placeholder="Ingrese el código que llegó a su correo"
+        formControlName="token"
+      />
+      <br>
+      <p>El código tiene una duración de 15 minutos</p>
+    </div>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary btn-sm mx-2" (click)="activarCuenta()">Activar Cuenta</button>
+      <button type="button" class="btn btn-primary btn-sm mx-2" (click)="reenviarCodigo()">Reenviar Código</button>
+    </div>
+  </form>
+</div>

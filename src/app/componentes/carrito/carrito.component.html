@@ -1,0 +1,46 @@
+<div class="container mt-5">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="text-center text-primary">Carrito de Compras</h3>
+  
+        <div class="table-responsive">
+          <table class="table table-bordered cart-table">
+            <thead>
+              <tr>
+                <th>Nombre del Evento</th>
+                <th>Localidad</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of itemsCarrito; trackBy: trackById">
+                <td>{{ nombresEventos.get(item.idEvento) || 'Cargando...' }}</td>
+                <td>{{ item.nombreLocalidad }}</td>
+                <!--<td>{{ item.cantidad }}</td>-->
+                <td>
+                    <input type="number" [(ngModel)]="item.cantidad" (change)="actualizarCantidad(item)" min="1" class="form-control" />
+                  </td>
+                  
+                <td>{{ obtenerPrecio(item) | currency: 'COL ' }}</td>
+
+                <!--<td>{{ item.precioUnitario | currency: 'COL ' }}</td>-->
+                <td>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="eliminarItem(item)">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <div class="text-end mt-3">
+          <button type="button" class="btn btn-primary" (click)="procederAlPago()">Proceder al Pago</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  

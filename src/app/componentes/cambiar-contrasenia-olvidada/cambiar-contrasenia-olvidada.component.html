@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="col-md-6 col-lg-4 p-4 border rounded text-center position-relative">
+        <h5 class="fw-bold mb-3">Cambiar Contraseña</h5>
+        
+        <div class="mb-4 text-start">
+            <h6>Información</h6>
+            <div class="mb-2">
+                <label class="form-label">NombreUsuario</label>
+                <input type="text" class="form-control" [value]="nombreUsuario" readonly>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [value]="emailUsuario" readonly>
+            </div>
+        </div>
+
+        <div class="mb-4 text-start">
+            <h6>Contraseña</h6>
+            <div class="mb-2">
+                <label class="form-label">Nueva Contraseña</label>
+                <input type="password" class="form-control" >
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Confirmar Nueva Contraseña</label>
+                <input type="password" class="form-control" >
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-sm px-4">Guardar</button>
+        <button type="button" class="btn btn-secondary btn-sm ms-3">Volver</button>
+    </div>
+</div>

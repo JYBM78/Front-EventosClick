@@ -1,0 +1,37 @@
+<div class="container">
+    <h2>CAMBIAR CONTRASEÑA</h2>
+  
+    <form [formGroup]="cambioContraseniaForm" (ngSubmit)="guardar()">
+      <div class="section">
+        <h3>Información</h3>
+        <label>Nombre Usuario</label>
+        <input type="text" class="form-control" formControlName="nombreUsuario"  />
+  
+        <label>Email</label>
+        <input type="email" class="form-control" formControlName="email"  />
+      </div>
+  
+      <div class="section">
+        <button type="button" (click)="obtenerCodigoVerificacion()" class="btn btn-primary">Obtener Código de Verificación</button>
+        <input type="text" class="form-control" placeholder="Ingrese su código" formControlName="codigoVerificacion" />
+      </div>
+  
+      <div class="section">
+        <h3>Contraseña</h3>
+        <label>Contraseña Anterior</label>
+        <input type="password" class="form-control" formControlName="contraseniaAnterior" />
+  
+        <label>Nueva Contraseña</label>
+        <input type="password" class="form-control" formControlName="nuevaContrasenia" />
+  
+        <label>Confirmar Nueva Contraseña</label>
+        <input type="password" class="form-control" formControlName="confirmarNuevaContrasenia" />
+      </div>
+  
+      <div class="buttons">
+        <button type="submit" class="btn btn-primary" [disabled]="!cambioContraseniaForm.valid">Guardar</button>
+        <button type="button" (click)="volver()" class="btn btn-secondary">Volver</button>
+      </div>
+    </form>
+  </div>
+  

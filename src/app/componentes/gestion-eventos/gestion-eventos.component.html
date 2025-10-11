@@ -1,0 +1,82 @@
+<div class="container">
+
+
+  <div class="card">
+
+
+    <div class="card-header ps-5 pt-4 pb-4">
+      <h5 class="mb-0"><i class="fa-solid fa-location-dot me-3"></i>Gestión de eventos</h5>
+  </div>
+
+
+  <div class="card-body p-5">
+
+
+      <div class="mb-3">
+          <button type="button" routerLink="/crear-evento" class="btn btn-success me-2">
+            <i class="fa-solid fa-plus me-1"></i> Crear</button>
+            
+                   <button type="button" class="btn btn-danger anim-e" (click)="confirmarEliminacion()" [disabled]="seleccionados.length == 0" data-bs-toggle="modal" data-bs-target="#borrar">
+                    <i class="fa-solid fa-trash me-1"></i> Eliminar {{ textoBtnEliminar }}
+                   </button>
+      </div>
+
+
+
+      <div class="overflow-x-auto rounded-xl">
+        <table class="min-w-full bg-white border border-gray-200">
+          <thead class="bg-gray-100">
+            <tr>
+              <th></th>
+              <th class="px-4 py-2 text-left">Código</th>
+              <th class="px-4 py-2 text-left">Nombre</th>
+              <th class="px-4 py-2 text-left">Tipo</th>
+              <th class="px-4 py-2 text-left">Imagen</th>
+              <th class="px-4 py-2 text-left">Ciudad</th>
+              <th class="px-4 py-2 text-left">Fecha</th>
+              <th class="px-4 py-2 text-left">Estado</th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            @for (item of eventos; track $index) {
+              <tr>
+                <td><input #check class="form-check-input" type="checkbox" (change)="seleccionar(item, check.checked)" /></td>
+                <td class="px-4 py-2">
+                  <p>{{item.id}}</p>
+                </td>
+                <td class="px-4 py-2">
+                  <p>{{item.nombre}}</p>
+                </td>
+                <td class="px-4 py-2">
+                  <p>{{item.tipo}}</p>
+                </td>
+                <td class="px-4 py-2 image-cell"> <img src="{{item.imagenPortada}}" width="200px" alt="{{item.nombre}}"> 
+                </td>
+                <td class="px-4 py-2">
+                  <p>{{item.ciudad}}</p>
+                </td>
+                <td class="px-4 py-2">
+                  <p>{{item.fecha}}</p>
+                </td>
+                <td class="px-4 py-2">
+                  <p>{{item.estado}}</p>
+                </td>
+                <td class="px-4 py-3">
+                <button type="button" [routerLink]="['/editar-evento', item.id]" class="btn btn-primary">Editar</button>
+                </td>
+                <td class="px-4 py-2">
+                  
+                    <button type="button" [routerLink]="['/detalle-evento', item.id]" class="btn btn-primary">Ver detalle</button>
+
+                   
+                </td>
+              </tr>
+            }
+              </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+  </div>
+      

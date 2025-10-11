@@ -1,0 +1,58 @@
+<!-- detalle-evento.component.html -->
+<div class="container" *ngIf="evento">
+    <!-- Cabecera del evento -->
+    <div class="card mb-4">
+        <div class="card-header text-center bg-primary text-white">
+            <h2>Detalle del Evento</h2>
+        </div>
+        <div class="card-body row">
+            <!-- Imagen del evento -->
+            <div class="col-md-4 text-center">
+                <img [src]="evento.imagenPortada" alt="Imagen del Evento" class="img-fluid rounded">
+            </div>
+            <!-- Información del evento -->
+            <div class="col-md-8">
+                <h3 class="card-title">{{ evento.nombre }}</h3>
+                <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+                <p><strong>Ciudad:</strong> {{ evento.ciudad }}</p>
+                <p><strong>Fecha:</strong> {{ evento.fechaEvento | date: 'dd MMMM, yyyy' }}</p> 
+                <p><strong>Estado:</strong> {{ evento.estado }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de localidades -->
+    <div class="card mb-4" *ngIf="evento.localidades?.length">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Capacidad Disponible por Localidad</h4>
+        </div>
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Localidad</th>
+                            <th>Precio</th>
+                            <th>Capacidad Máxima</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let localidad of evento.localidades">
+                            <td>{{ localidad.nombre }}</td>
+                            <td>{{ localidad.precio | currency }}</td>
+                            <td>{{ localidad.capacidadMaxima }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para comprar entradas -->
+    <div class="text-center">
+        <button (click)="comprarEntradas()" class="btn btn-success btn-lg">
+            Comprar entradas
+        </button>
+    </div>
+    
+</div>

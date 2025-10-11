@@ -1,0 +1,40 @@
+<div class="container justify-content-center align-items-center vh-10" style="min-height: 75vh;">
+  <form class="row g-3" [formGroup]="nuevaContraseniaForm" (ngSubmit)="cambiarContrasenia()">
+    <div class="mb-6">
+    <label for="codigoVerificacion" class="form-label">Código:</label>
+    <input
+        id="codigoVerificacion"
+        type="text"
+        class="form-control"
+        placeholder="Ingrese el código de validación enviado al email"
+        formControlName="codigoVerificacion"/>
+    </div>
+    <div class="mb-3">
+      <label for="passwordNueva" class="form-label">Nueva contraseña:</label>
+      <input
+        id="passwordNueva"
+        type="password"
+        class="form-control"
+        placeholder="Ingrese su nueva contraseña"
+        formControlName="passwordNueva"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="confirmarContrasena" class="form-label">Confirmar nueva contraseña:</label>
+      <input
+        id="confirmarContrasena"
+        type="password"
+        class="form-control"
+        placeholder="Confirme su nueva contraseña"
+        formControlName="confirmarContrasena"/>
+    </div>
+    @if (nuevaContraseniaForm.hasError('passwordsMismatch')) {
+        <div class="alert alert-danger" role="alert" >Las contraseñas no coinciden</div>
+       }
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="nuevaContraseniaForm.invalid">
+          <i class="fa-solid me-2"></i>Cambiar Contraseña
+        </button>
+    </div>
+  </form>
+</div> 
