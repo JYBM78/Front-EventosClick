@@ -17,7 +17,7 @@ import { TipoEventoDTO } from '../dto/tipo-evento-dto';
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiURL = "http://localhost:8082/api/cliente";
+  private apiURL = "http://localhost:8080/api/cliente";
 
   private getAuthHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('AuthToken');

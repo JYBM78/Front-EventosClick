@@ -36,11 +36,7 @@ export class ConfirmarOrdenComponent implements OnInit {
     // Definir el mapa de nombres de eventos
     nombresEventos = new  Map<string, string> ();
     eventos!: EventoDTO[];
-
     idOrden!:string;
-
-    
-    
 
   constructor(
     private clienteService: ClienteService,

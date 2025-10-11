@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { EventoDTO } from '../../dto/evento-dto';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventosService } from '../../servicios/eventos.service';
 import { PublicoService } from '../../servicios/publico.service';
 
 import { CommonModule } from '@angular/common';

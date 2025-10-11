@@ -14,7 +14,7 @@ export class PublicoService {
 
 
 
- private publicoURL = "http://localhost:8082/api/general";
+ private publicoURL = "http://localhost:8080/api/general";
 
  
 

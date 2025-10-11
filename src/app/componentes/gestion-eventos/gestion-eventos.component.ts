@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EventosService } from '../../servicios/eventos.service';
 import { RouterModule } from '@angular/router';
 import { EventoDTO } from '../../dto/evento-dto';
 import Swal from 'sweetalert2';
@@ -21,7 +20,7 @@ export class GestionEventosComponent {
   textoBtnEliminar: string;
 
 
-  constructor(public eventosService:EventosService, private adminService: AdministradorService) {
+  constructor(public eventosService:AdministradorService, private adminService: AdministradorService) {
     this.seleccionados = [];
     this.textoBtnEliminar = "";
     //this.eventos = eventosService.listar();
@@ -92,7 +91,7 @@ export class GestionEventosComponent {
  }
  public eliminarEventos() {
   this.seleccionados.forEach((e1: { id: string | String; }) => {
-    this.eventosService.eliminar(e1.id);
+    this.eventosService.eliminarEvento(e1.id);
     this.eventos = this.eventos.filter(e2 => e2.id !== e1.id);
   });
   this.seleccionados = [];
