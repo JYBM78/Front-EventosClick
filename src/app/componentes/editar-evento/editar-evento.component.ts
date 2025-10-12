@@ -74,7 +74,7 @@ export class EditarEventoComponent implements OnInit {
               descripcion: evento.descripcion,
               tipo: evento.tipo,
               ciudad: evento.ciudad,
-              fechaEvento: evento.fechaEvento,
+              fechaEvento: fechaEvento,
               imagenLocalidades: evento.imagenLocalidades,
               imagenPortada: evento.imagenPortada
             });

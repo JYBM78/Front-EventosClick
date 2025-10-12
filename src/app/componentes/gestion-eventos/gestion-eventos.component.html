@@ -16,9 +16,9 @@
           <button type="button" routerLink="/crear-evento" class="btn btn-success me-2">
             <i class="fa-solid fa-plus me-1"></i> Crear</button>
             
-                   <button type="button" class="btn btn-danger anim-e" (click)="confirmarEliminacion()" [disabled]="seleccionados.length == 0" data-bs-toggle="modal" data-bs-target="#borrar">
+                  <button type="button" class="btn btn-danger anim-e" (click)="confirmarEliminacion()" [disabled]="seleccionados.length == 0" data-bs-toggle="modal" data-bs-target="#borrar">
                     <i class="fa-solid fa-trash me-1"></i> Eliminar {{ textoBtnEliminar }}
-                   </button>
+                  </button>
       </div>
 
 
@@ -57,7 +57,7 @@
                   <p>{{item.ciudad}}</p>
                 </td>
                 <td class="px-4 py-2">
-                  <p>{{item.fecha}}</p>
+                  <p>{{ formatearFecha(item.fechaEvento)}}</p>
                 </td>
                 <td class="px-4 py-2">
                   <p>{{item.estado}}</p>

@@ -57,6 +57,24 @@ export class GestionEventosComponent {
 
  }
 
+ public formatearFecha(fechaISO: Date): string {
+  if (!fechaISO) return '';
+  const fecha = new Date(fechaISO);
+  
+  // Opciones de formato
+  const opciones: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true, // Usa formato 12h (a. m. / p. m.)
+  };
+
+  return fecha.toLocaleDateString('es-CO', opciones);
+}
+
+
 
  private actualizarMensaje() {
   const tam = this.seleccionados.length;

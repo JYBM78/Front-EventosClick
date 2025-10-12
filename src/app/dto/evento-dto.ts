@@ -4,7 +4,7 @@ export interface EventoDTO {
    id:string,
    nombre:string,
    descripcion:string,
-   fecha:Date,
+   fechaEvento:Date,
    tipo:string,
    direccion:string,
    ciudad:string,
