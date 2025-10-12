@@ -1,54 +1,96 @@
+<div class="container mt-4">
+  <div class="row">
 
-  <form [formGroup]="editarCuentaForm" (ngSubmit)="editarCuenta()" class="container mt-4">
+    <!-- Panel lateral -->
+    <div class="col-md-3">
+      <div class="list-group shadow-sm">
+        <button type="button" [routerLink]="['/editar-cuenta', obtenerIdCuenta()]" 
+                class="list-group-item list-group-item-action active">
+          Información personal
+        </button>
+        <button type="button" [routerLink]="['/cambiar-contrasenia', obtenerIdCuenta()]" 
+                class="list-group-item list-group-item-action">
+          Contraseña
+        </button>
+      
+        <button type="button" (click)="inactivarCuenta()" 
+                class="list-group-item list-group-item-action text-danger">
+          Inactivar cuenta
+        </button>
+      </div>
+    </div>
 
-          <div class="col-6">
-  
-        <label class="form-label">Cédula: </label>
-        <input type="text" class="form-control" formControlName="cedula" />
-       </div>
-       <div class="col-6">
-        <label class="form-label">Nombre: </label>
-        <input type="text" class="form-control" formControlName="nombre" />
-       </div>
-       <div class="col-6">
-        <label class="form-label">Email: </label>
-        <input type="email" class="form-control" formControlName="correo" />
-      </div>
-      <div class="col-6">
-        <label class="form-label">Dirección: </label>
-        <input type="text" class="form-control" formControlName="direccion" />
-      </div>
-      <div class="col-6">
-        <label class="form-label">Teléfono: </label>
-        <input type="number" class="form-control" formControlName="telefono" />
-      </div>
-      <div class="col-6">
-        <label class="form-label">Contraseña: </label>
-        <input type="password" class="form-control" formControlName="password" />
-      </div>
-      <div class="col-6">
-          <label class="form-label">Repetir contraseña: </label>
-          <input type="password" class="form-control" formControlName="confirmaPassword" />
+    <!-- Formulario principal -->
+    <div class="col-md-9">
+      <form [formGroup]="editarCuentaForm" (ngSubmit)="editarCuenta()" class="p-4 bg-white rounded shadow-sm">
+
+        <h5 class="mb-4">Información personal</h5>
+
+        <div class="row g-3">
+
+          <!-- Nombre -->
+          <div class="col-md-6">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" formControlName="nombre" />
+          </div>
+
+          <!-- Cédula -->
+          <div class="col-md-6">
+            <label class="form-label">Cédula de Ciudadanía</label>
+            <input type="text" class="form-control" formControlName="cedula" />
+          </div>
+
+          <!-- Correo -->
+          <div class="col-md-6">
+            <label class="form-label">E-mail</label>
+            <input type="email" class="form-control" formControlName="correo" />
+          </div>
+
+          <!-- Dirección -->
+          <div class="col-md-6">
+            <label class="form-label">Dirección</label>
+            <input type="text" class="form-control" formControlName="direccion" />
+          </div>
+
+          <!-- Teléfono -->
+          <div class="col-md-6">
+            <label class="form-label">Teléfono</label>
+            <div class="input-group">
+              <span class="input-group-text">+57</span>
+              <input type="number" class="form-control" formControlName="telefono" />
+            </div>
+          </div>
+
+          <!-- Contraseña -->
+          <div class="col-md-6">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-control" formControlName="password" />
+          </div>
+
+          <!-- Repetir contraseña -->
+          <div class="col-md-6">
+            <label class="form-label">Repetir contraseña</label>
+            <input type="password" class="form-control" formControlName="confirmaPassword" />
+          </div>
+
+          <!-- Alerta -->
+          <div class="col-12" *ngIf="editarCuentaForm.hasError('passwordsMismatch')">
+            <div class="alert alert-danger text-center">
+              Las contraseñas no coinciden
+            </div>
+          </div>
+
+          <!-- Botón de acción -->
+          <div class="col-12 text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4">
+              Guardar cambios
+            </button>
+          </div>
+
         </div>
-        @if (editarCuentaForm.hasError('passwordsMismatch')) {
-          <div class="alert alert-danger" role="alert" >Las contraseñas no coinciden</div>
-         }
-  
-  
-         <div class="col-12 text-center">
-          <button type="button" [routerLink]="['/editar-cuenta', obtenerIdCuenta()]" class="btn btn-primary">Editar Perfil</button>
-          <button type="button" [routerLink]="['/cambiar-contrasenia',obtenerIdCuenta()]" class="btn btn-primary">Cambiar Contraseña</button>
-          <button type="button" [routerLink]="['/historial-compras', obtenerIdCuenta()]" class="btn btn-primary">Historial</button>
-          <button type="button" [routerLink]="['/gestion-mis-boletas']" class="btn btn-primary">Boletas</button>
-        </div>
-        <div class="col-12 text-center">
-          <!-- Otros botones -->
-          <button type="button" (click)="inactivarCuenta()" class="btn btn-danger">Inactivar Cuenta</button>
-        </div>
-        
-       
-        
-  
-    </form>
-  
-  
+
+      </form>
+    </div>
+
+  </div>
+</div>

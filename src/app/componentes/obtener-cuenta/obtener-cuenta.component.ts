@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-obtener-cuenta',
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule,CommonModule],
   standalone: true,
   templateUrl: './obtener-cuenta.component.html',
   styleUrls: ['./obtener-cuenta.component.css']

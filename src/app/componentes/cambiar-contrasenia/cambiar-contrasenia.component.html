@@ -1,37 +1,86 @@
-<div class="container">
-    <h2>CAMBIAR CONTRASEÑA</h2>
-  
-    <form [formGroup]="cambioContraseniaForm" (ngSubmit)="guardar()">
-      <div class="section">
-        <h3>Información</h3>
-        <label>Nombre Usuario</label>
-        <input type="text" class="form-control" formControlName="nombreUsuario"  />
-  
-        <label>Email</label>
-        <input type="email" class="form-control" formControlName="email"  />
+<div class="container mt-4">
+  <div class="row">
+
+    <!-- Panel lateral -->
+    <div class="col-md-3">
+      <div class="list-group shadow-sm">
+        <button type="button" [routerLink]="['/obtener-info-cuenta', obtenerIdCuenta()]" 
+                class="list-group-item list-group-item-action ">
+          Información personal
+        </button>
+        <button type="button" [routerLink]="['/cambiar-contrasenia', obtenerIdCuenta()]" 
+                class="list-group-item list-group-item-action active">
+          Contraseña
+        </button>
+     
+        <button type="button" (click)="inactivarCuenta()" 
+                class="list-group-item list-group-item-action text-danger">
+          Inactivar cuenta
+        </button>
       </div>
-  
-      <div class="section">
-        <button type="button" (click)="obtenerCodigoVerificacion()" class="btn btn-primary">Obtener Código de Verificación</button>
-        <input type="text" class="form-control" placeholder="Ingrese su código" formControlName="codigoVerificacion" />
-      </div>
-  
-      <div class="section">
-        <h3>Contraseña</h3>
-        <label>Contraseña Anterior</label>
-        <input type="password" class="form-control" formControlName="contraseniaAnterior" />
-  
-        <label>Nueva Contraseña</label>
-        <input type="password" class="form-control" formControlName="nuevaContrasenia" />
-  
-        <label>Confirmar Nueva Contraseña</label>
-        <input type="password" class="form-control" formControlName="confirmarNuevaContrasenia" />
-      </div>
-  
-      <div class="buttons">
-        <button type="submit" class="btn btn-primary" [disabled]="!cambioContraseniaForm.valid">Guardar</button>
-        <button type="button" (click)="volver()" class="btn btn-secondary">Volver</button>
-      </div>
-    </form>
+    </div>
+
+    <!-- Formulario principal -->
+    <div class="col-md-9">
+      <form [formGroup]="cambioContraseniaForm" (ngSubmit)="guardar()" class="p-4 bg-white rounded shadow-sm">
+
+        <h5 class="mb-4">Cambiar contraseña</h5>
+
+        <!-- Sección de información -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Nombre de usuario</label>
+            <input type="text" class="form-control" formControlName="nombreUsuario" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">E-mail</label>
+            <input type="email" class="form-control" formControlName="email" />
+          </div>
+        </div>
+
+        <!-- Sección de verificación -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-8">
+            <label class="form-label">Código de verificación</label>
+            <input type="text" class="form-control" placeholder="Ingrese su código" formControlName="codigoVerificacion" />
+          </div>
+          <div class="col-md-4 d-flex align-items-end">
+            <button type="button" (click)="obtenerCodigoVerificacion()" class="btn btn-outline-primary w-100">
+              Obtener código
+            </button>
+          </div>
+        </div>
+
+        <!-- Sección de contraseñas -->
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Contraseña anterior</label>
+            <input type="password" class="form-control" formControlName="contraseniaAnterior" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Nueva contraseña</label>
+            <input type="password" class="form-control" formControlName="nuevaContrasenia" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Confirmar nueva contraseña</label>
+            <input type="password" class="form-control" formControlName="confirmarNuevaContrasenia" />
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="text-end mt-4">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="!cambioContraseniaForm.valid">
+            Guardar cambios
+          </button>
+          <button type="button" (click)="volver()" class="btn btn-secondary">
+            Volver
+          </button>
+        </div>
+      </form>
+    </div>
+
   </div>
-  
+</div>

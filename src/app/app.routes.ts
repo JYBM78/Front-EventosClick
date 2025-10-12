@@ -36,6 +36,7 @@ export const routes: Routes = [
    { path: 'carrito', component: CarritoComponent },  // Ruta para el carrito de compras
 
    { path: 'editar-evento/:id', component: EditarEventoComponent ,canActivate: [RolesGuard], data: { expectedRole: ["ADMINISTRADOR"] } },
+  // { path: 'editar-cuenta/:id', component: EditarCuentaComponent  },
    { path: 'editar-cuenta/:id', component: EditarCuentaComponent ,canActivate: [RolesGuard], data: { expectedRole: ["CLIENTE"] } },
    { path: 'obtener-info-cuenta/:id', component: ObtenerCuentaComponent  },
    { path: 'confirmar-orden', component: ConfirmarOrdenComponent },  // Ruta para confirmar orden

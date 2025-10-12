@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CambiarPasswordDTO } from '../../dto/cambiar-contrasenia-dto';
 import { PublicoService } from '../../servicios/publico.service';
 
 @Component({
   selector: 'app-cambiar-contrasenia',
   standalone: true,
-  imports: [ReactiveFormsModule],  // IMPORTACIÓN NECESARIA AQUÍ
+  imports: [ReactiveFormsModule,RouterModule],  // IMPORTACIÓN NECESARIA AQUÍ
   templateUrl: './cambiar-contrasenia.component.html',
   styleUrls: ['./cambiar-contrasenia.component.css']
 })
@@ -24,6 +24,7 @@ export class CambiarContraseniaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     // Inicializa el formulario
     this.cambioContraseniaForm = this.formBuilder.group({
       nombreUsuario: [{ value: '', disabled: true }, Validators.required],
@@ -45,6 +46,35 @@ export class CambiarContraseniaComponent implements OnInit {
     });
   }
 
+  public obtenerIdCuenta():String{
+      return this.codigoCuenta;
+  }
+
+  
+
+  inactivarCuenta(): void {
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: '¿Deseas inactivar tu cuenta? Esta acción no se puede deshacer.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, inactivar',
+          cancelButtonText: 'Cancelar',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.publicoService.inactivarCuenta(this.codigoCuenta).subscribe({
+              next: () => {
+                Swal.fire('Cuenta Inactivada', 'Tu cuenta ha sido inactivada exitosamente.', 'success');
+              },
+              error: (error) => {
+                Swal.fire('Error', 'Hubo un problema al inactivar la cuenta.', 'error');
+                console.error(error);
+              },
+            });
+          }
+        });
+      }
+      
   obtenerCuenta() {
     this.publicoService.obtenerCuenta(this.codigoCuenta).subscribe({
       next: (data) => {
