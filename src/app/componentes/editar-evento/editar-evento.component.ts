@@ -5,7 +5,8 @@ import Swal from 'sweetalert2';
 import { EditarEventoDTO } from '../../dto/editar-evento-dto';
 import { PublicoService } from '../../servicios/publico.service';
 import { AdministradorService } from '../../servicios/administrador.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { EventoDTO } from '../../dto/evento-dto';
 
 @Component({
   selector: 'app-editar-evento',
@@ -25,13 +26,15 @@ export class EditarEventoComponent implements OnInit {
   imagenLocalidades?: File;
   evento!: EditarEventoDTO;
   eventoEditado!: EditarEventoDTO;
+  eventoCompleto!:EventoDTO;
 
 
   constructor(
     private formBuilder: FormBuilder,
     private publicoService: PublicoService,
     private adminService: AdministradorService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.crearFormulario();
     this.tiposDeEvento = ['Concierto', 'Fiesta', 'Teatro', 'Deportes'];
@@ -64,6 +67,7 @@ export class EditarEventoComponent implements OnInit {
       next: (data) => {
         if (data && data.respuesta) {
           const evento = data.respuesta;
+          this.eventoCompleto = data.respuesta;
           const fechaEvento = evento.fechaEvento
             ? new Date(evento.fechaEvento).toISOString().split('T')[0]
             : '';
@@ -125,6 +129,8 @@ export class EditarEventoComponent implements OnInit {
         next: (data: { respuesta: any }) => {
           Swal.fire('¡Éxito!', 'El evento ha sido actualizado.', 'success');
           this.crearEventoForm.reset();
+          this.router.navigate(['/gestion-eventos']);
+
         },
         error: (error: { error: { respuesta: string | undefined } }) => {
           Swal.fire('¡Error!', error.error.respuesta || 'Error al actualizar el evento', 'error');

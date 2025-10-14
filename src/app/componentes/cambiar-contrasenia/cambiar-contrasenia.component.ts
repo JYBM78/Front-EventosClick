@@ -125,6 +125,11 @@ export class CambiarContraseniaComponent implements OnInit {
 
     this.publicoService.cambiarPassword(cambio).subscribe({
       next: () => {
+        this.cambioContraseniaForm.patchValue({
+              contraseniaAnterior: null,
+              nuevaContrasenia: null,
+              confirmarNuevaContrasenia:null
+            });
         Swal.fire('Éxito', 'La contraseña ha sido cambiada exitosamente.', 'success');
       },
       error: () => {

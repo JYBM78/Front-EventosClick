@@ -1,5 +1,5 @@
 export interface InformacionCuentaDTO {
-     id: String,
+        id: String,
          cedula:String,
          nombre : String,
          telefono:String ,

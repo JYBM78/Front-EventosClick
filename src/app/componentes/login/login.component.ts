@@ -21,7 +21,7 @@ export class LoginComponent {
   loginForm!: FormGroup;
   captchaValido!: Boolean;
 token: string | null = null;
-siteKey: string = '';
+siteKey: string = '6LflRekrAAAAAEl4PVg9-8ptzEfc8HgCUnqjCvYb';
 
 onCaptchaSuccess(token: string) {
   this.http.post<any>('http://localhost:8080/api/general/validate', { token }).subscribe({

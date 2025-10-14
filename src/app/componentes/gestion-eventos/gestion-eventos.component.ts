@@ -40,7 +40,7 @@ export class GestionEventosComponent {
   }
 
  ngOnInit(): void {
-  this.listarEventos(); // Aquí llamas el método listar
+  this.listarEventos(); // Aquí llama el método listar
 }
  public seleccionar(evento: EventoDTO, estado: boolean) {
 
@@ -109,8 +109,17 @@ export class GestionEventosComponent {
  }
  public eliminarEventos() {
   this.seleccionados.forEach((e1: { id: string | String; }) => {
-    this.eventosService.eliminarEvento(e1.id);
-    this.eventos = this.eventos.filter(e2 => e2.id !== e1.id);
+    this.eventosService.eliminarEvento(e1.id).subscribe({
+      next: (data) => {
+        data.respuesta
+        //window.location.reload();
+        this.listarEventos();
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+    //this.eventos = this.eventos.filter(e2 => e2.id !== e1.id);
   });
   this.seleccionados = [];
   this.actualizarMensaje();

@@ -8,6 +8,7 @@ import { AdministradorService , } from '../../servicios/administrador.service';
 import {  RouterModule } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
+import { EditarCuentaDTO } from '../../dto/editar-cuenta-dto';
 
 
 @Component({
@@ -40,9 +41,9 @@ export class ObtenerCuentaComponent implements OnInit {
     this.editarCuentaForm = this.formBuilder.group(
       {
       //id: [''],
-      cedula: ['', [Validators.required]],
+      cedula: [{ value: '', disabled: true },  [Validators.required]],
       nombre: ['', [Validators.required]],
-      correo: ['', [Validators.required, Validators.email]],
+      correo: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       direccion: ['', [Validators.required]],
       telefono: ['', [Validators.required, Validators.maxLength(10)]],
       password: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(7)]],
@@ -61,7 +62,7 @@ export class ObtenerCuentaComponent implements OnInit {
         this.obtenerCuenta();
         
       } else {
-        console.error("Código de cupón no encontrado en la URL");
+        console.error("Error");
       }
       ///console.log('Código del cupón:', this.codigoCuenta);
       // Aquí puedes llamar un servicio para cargar los detalles del cupón usando el 'codigoCupon'
@@ -71,13 +72,26 @@ export class ObtenerCuentaComponent implements OnInit {
       return this.codigoCuenta;
   }
 
+
   editarCuenta(): void {
-    /*if (this.editarCuentaForm.valid) {
-      const cuentaData = this.editarCuentaForm.value;
+    if (this.editarCuentaForm.valid) {
+      const cuentaData: EditarCuentaDTO = {
+      id: this.cuenta.id, // este valor debe venir del usuario logueado o un servicio
+      nombre: this.editarCuentaForm.get('nombre')?.value,
+      correo: this.editarCuentaForm.get('correo')?.value,
+      telefono: this.editarCuentaForm.get('telefono')?.value,
+      direccion: this.editarCuentaForm.get('direccion')?.value
+    };
       this.publicoService.actualizarCuenta(cuentaData).subscribe({
         next: (data) => {
           Swal.fire('¡Éxito!', 'Se ha actualizado la cuenta.', 'success');
-          this.editarCuentaForm.reset(); // Limpiar el formulario tras actualizar la cuenta
+          this.obtenerCuenta();
+          this.editarCuentaForm.patchValue({
+              password: null,
+              confirmaPassword: null
+            });
+
+
         },
         error: (error) => {
           Swal.fire('¡Error!', 'Ocurrió un error al actualizar la cuenta.', 'error');
@@ -85,7 +99,7 @@ export class ObtenerCuentaComponent implements OnInit {
       });
     } else {
       Swal.fire('¡Error!', 'Por favor, complete todos los campos requeridos.', 'error');
-    }*/
+    }
   }
 
   // Validador personalizado para verificar si las contraseñas coinciden
