@@ -35,12 +35,11 @@ export class CarritoComponent implements OnInit{
     this.idCuenta = this.tokenService.getIDCuenta();
     this.publicoService.listarTodosEventos().subscribe({
       next: (data) => {
-        //console.log(data);
         this.eventos = data.respuesta;
         this.eventos.forEach(evento => {
           this.nombresEventos.set(evento.id, evento.nombre);
         });
-        //console.log(this.eventos);
+
       },
       error: (error) => {
         console.error( error);
@@ -61,7 +60,7 @@ export class CarritoComponent implements OnInit{
   procederAlPago() {
     // Realiza aquí cualquier acción o validación antes de redirigir
     if (this.carrito && this.carrito.id) {
-      console.log('Redirigiendo al pago para la orden:', this.carrito.id);
+      //console.log('Redirigiendo al pago para la orden:', this.carrito.id);
 
       // Navegar a la ruta usando el `Router`
       this.router.navigate(['/confirmar-orden', this.carrito.id]);
@@ -94,13 +93,12 @@ export class CarritoComponent implements OnInit{
     this.obtenerPrecio(item); // Recalcula el precio para el ítem
     this.clienteService.editarItemCarrito(this.carrito.id, item).subscribe({
       next: (data) => {
-        //console.log(data);
       },
       error: (error) => {
         console.error(error);
       },
     });
-    console.log('Ítem actualizado:', item);
+    console.log('Ítem actualizado:');
   }
 
 
@@ -186,8 +184,7 @@ export class CarritoComponent implements OnInit{
 
       // Actualizar el carrito con los nuevos items
       this.carrito.items = this.itemsCarrito;
-       console.log(data);
-       
+
       },
       error: (error) => {
         console.error(error);
