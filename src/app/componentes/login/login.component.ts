@@ -21,17 +21,17 @@ export class LoginComponent {
   loginForm!: FormGroup;
   captchaValido!: Boolean;
 token: string | null = null;
-siteKey: string = '6LflRekrAAAAAEl4PVg9-8ptzEfc8HgCUnqjCvYb';
+siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
 onCaptchaSuccess(token: string) {
   this.http.post<any>('https://eventosclick.onrender.com/api/general/validate', { token }).subscribe({
     next: (data) => {
       // data tiene la estructura { error: false, respuesta: true/false }
       const isValid = data.respuesta;
-      this.captchaValido = !isValid;
-      console.log('¿Captcha válido?:', !isValid);
+      this.captchaValido = isValid;
+      console.log('¿Captcha válido?:', isValid);
 
-      if (!isValid) {
+      if (isValid) {
         console.log(' Validación exitosa: El reCAPTCHA se verificó correctamente');
       } else {
         console.log(' Validación fallida: El reCAPTCHA no es válido, intenta nuevamente.');
