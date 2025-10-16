@@ -1,53 +1,145 @@
-<div class="container">
-  <div class="card">
-    <div class="card-header p-4">
+<div class="container my-5">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-primary text-white p-4">
       <h5 class="mb-0">
-        <i class="fa-solid fa-user-plus me-3"></i>Registro de un nuevo cliente
+        <i class="fa-solid fa-user-plus me-2"></i> Registro de nuevo cliente
       </h5>
     </div>
+
     <div class="card-body p-4">
-      <form class="row g-3" [formGroup]="registroForm" (ngSubmit)="registrar()" >
-        <div class="col-6">
+      <form class="row g-3" [formGroup]="registroForm" (ngSubmit)="registrar()">
 
-      <label class="form-label">Cédula: </label>
-      <input type="text" class="form-control" formControlName="cedula" />
-     </div>
-     <div class="col-6">
-      <label class="form-label">Nombre: </label>
-      <input type="text" class="form-control" formControlName="nombre" />
-     </div>
-     <div class="col-6">
-      <label class="form-label">Email: </label>
-      <input type="email" class="form-control" formControlName="correo" />
+        <!-- Cédula -->
+        <div class="col-md-6">
+          <label class="form-label">Cédula:</label>
+          <input type="text" class="form-control" formControlName="cedula" />
+        </div>
+
+        <!-- Nombre -->
+        <div class="col-md-6">
+          <label class="form-label">Nombre:</label>
+          <input type="text" class="form-control" formControlName="nombre" />
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+          <label class="form-label">Email:</label>
+          <input type="email" class="form-control" formControlName="correo" />
+        </div>
+
+        <!-- Dirección -->
+        <div class="col-md-6">
+          <label class="form-label">Dirección:</label>
+          <input type="text" class="form-control" formControlName="direccion" />
+        </div>
+
+        <!-- Teléfono -->
+        <div class="col-md-6">
+          <label class="form-label">Teléfono:</label>
+          <input type="number" class="form-control" formControlName="telefono" />
+        </div>
+
+        <!-- Contraseña -->
+        <div class="col-md-6">
+          <label class="form-label">Contraseña:</label>
+          <input type="password" class="form-control" formControlName="password" />
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="col-md-6">
+          <label class="form-label">Repetir contraseña:</label>
+          <input type="password" class="form-control" formControlName="confirmaPassword" />
+        </div>
+
+        <!-- Alerta si las contraseñas no coinciden -->
+        @if (registroForm.hasError('passwordsMismatch')) {
+          <div class="col-12">
+            <div class="alert alert-danger mt-2" role="alert">
+              Las contraseñas no coinciden.
+            </div>
+          </div>
+        }
+
+        <!-- Checkbox de Términos -->
+        <div class="col-12 mt-3">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="terminos"
+              formControlName="terminos"
+            />
+            <label class="form-check-label" for="terminos">
+              Acepto los
+              <a href="#" data-bs-toggle="modal" data-bs-target="#modalTerminos">
+                Términos y Condiciones
+              </a>.
+            </label>
+          </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="col-12 text-center mt-4">
+          <button
+            type="submit"
+            class="btn btn-primary px-4"
+          >
+            <i class="fa-solid fa-plus me-2"></i> Registrarse
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="col-6">
-      <label class="form-label">Dirección: </label>
-      <input type="text" class="form-control" formControlName="direccion" />
-    </div>
-    <div class="col-6">
-      <label class="form-label">Teléfono: </label>
-      <input type="number" class="form-control" formControlName="telefono" />
-    </div>
-    <div class="col-6">
-      <label class="form-label">Contraseña: </label>
-      <input type="password" class="form-control" formControlName="password" />
-    </div>
-    <div class="col-6">
-        <label class="form-label">Repetir contraseña: </label>
-        <input type="password" class="form-control" formControlName="confirmaPassword" />
+  </div>
+</div>
+
+<!-- Modal de Términos y Condiciones -->
+<div
+  class="modal fade"
+  id="modalTerminos"
+  tabindex="-1"
+  aria-labelledby="modalTerminosLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalTerminosLabel">
+          Términos y Condiciones de Uso
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
       </div>
-      @if (registroForm.hasError('passwordsMismatch')) {
-        <div class="alert alert-danger" role="alert" >Las contraseñas no coinciden</div>
-       }
-
-
-       <div class="col-12 text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="registroForm.invalid">
-          <i class="fa-solid fa-plus me-2"></i>Registrarse
+      <div class="modal-body">
+        <p>
+          Bienvenido a <strong>EventosClick</strong>. Al registrarse y utilizar nuestros servicios, usted acepta las siguientes condiciones:
+        </p>
+        <ul>
+          <li>Su información personal será tratada conforme a nuestra Política de Privacidad.</li>
+          <li>El usuario es responsable de la veracidad de los datos proporcionados.</li>
+          <li>No se permite el uso indebido o fraudulento de la plataforma.</li>
+          <li>Nos reservamos el derecho de modificar estos términos cuando sea necesario.</li>
+          <li>
+            Para más detalles, puede consultar nuestra
+            <a href="/privacidad-datos" target="_blank">Política de Privacidad</a>.
+          </li>
+        </ul>
+        <p class="mb-0">
+          Si no está de acuerdo con estos términos, le recomendamos no utilizar nuestros servicios.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
         </button>
-       </div>
-
-  </form>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -20,6 +20,7 @@ import { ActivarCuentaComponent } from './componentes/activar-cuenta/activar-cue
 import { NuevaContraseniaComponent } from './componentes/nueva-contrasenia/nueva-contrasenia.component';
 import { CambiarContraseniaOlvidadaComponent } from './componentes/cambiar-contrasenia-olvidada/cambiar-contrasenia-olvidada.component';
 import { CambiarContraseniaComponent } from './componentes/cambiar-contrasenia/cambiar-contrasenia.component';
+import { PrivacidadDatosComponent } from './componentes/privacidad-datos/privacidad-datos.component';
 
 
 
@@ -29,6 +30,8 @@ export const routes: Routes = [
   //{ path: 'pago-fallido',component: PagoFallidoComponent },
   //{ path: 'pago-pendiente',component: PagoPendienteComponent },
   { path: 'cambiar-contrasenia/:id', component: CambiarContraseniaComponent },
+
+  { path: 'privacidad-datos', component: PrivacidadDatosComponent },
   { path: 'confirmar-orden/:id', component: ConfirmarOrdenComponent },
    { path: "gestion-eventos", component: GestionEventosComponent,canActivate: [RolesGuard], data: { expectedRole: ["ADMINISTRADOR"] } },
    { path: 'crear-evento', component: CrearEventoComponent,canActivate: [RolesGuard], data: { expectedRole: ["ADMINISTRADOR"] } },  // Ruta para crear evento
