@@ -1,46 +1,81 @@
 <div class="container mt-5">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="text-center text-primary">Carrito de Compras</h3>
-  
-        <div class="table-responsive">
-          <table class="table table-bordered cart-table">
-            <thead>
-              <tr>
-                <th>Nombre del Evento</th>
-                <th>Localidad</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of itemsCarrito; trackBy: trackById">
-                <td>{{ nombresEventos.get(item.idEvento) || 'Cargando...' }}</td>
-                <td>{{ item.nombreLocalidad }}</td>
-                <!--<td>{{ item.cantidad }}</td>-->
-                <td>
-                    <input type="number" [(ngModel)]="item.cantidad" (change)="actualizarCantidad(item)" min="1" class="form-control" />
-                  </td>
-                  
-                <td>{{ obtenerPrecio(item) | currency: 'COL ' }}</td>
+  <div class="card">
+    <div class="card-body">
+      <h3 class="text-center text-primary">Carrito de Compras</h3>
 
-                <!--<td>{{ item.precioUnitario | currency: 'COL ' }}</td>-->
-                <td>
-                  <button type="button" class="btn btn-danger btn-sm" (click)="eliminarItem(item)">
-                    <i class="fa-solid fa-trash"></i> Eliminar
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <div class="text-end mt-3">
-          <button type="button" class="btn btn-primary" (click)="procederAlPago()">Proceder al Pago</button>
+      <div class="table-responsive">
+        <table class="table table-bordered cart-table text-center align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Evento</th>
+              <th>Localidad</th>
+              <th>Cantidad</th>
+              <th>Precio Total</th>
+              <th>Sillas Seleccionadas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
 
-        </div>
+          <tbody>
+            <tr *ngFor="let item of itemsCarrito; trackBy: trackById">
+              <td>{{ nombresEventos.get(item.idEvento) || 'Cargando...' }}</td>
+              <td>{{ item.nombreLocalidad }}</td>
+
+             <!--- <td>
+                <input
+                  type="text"
+                  [(ngModel)]="item.cantidad"
+                  (change)="actualizarCantidad(item)"
+                  min="1"
+                  class="form-control text-center"
+                />
+              </td>-->
+              <td class="text-center">
+              {{ item.cantidad }}
+              </td>
+
+
+              <td>{{ obtenerPrecio(item) | currency: 'COL' }}</td>
+
+              <!-- 🔹 Mostrar las sillas seleccionadas -->
+              <td>
+                <div *ngIf="item.sillasSeleccionadas?.length; else sinSillas">
+                  <span
+                    *ngFor="let silla of item.sillasSeleccionadas; let i = index"
+                    class="badge bg-info text-dark me-1"
+                  >
+                    {{ silla }}
+                  </span>
+                </div>
+                <ng-template #sinSillas>
+                  <span class="text-muted">Sin selección</span>
+                </ng-template>
+              </td>
+
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="eliminarItem(item)"
+                >
+                  <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-end mt-3">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="procederAlPago()"
+          [disabled]="!itemsCarrito?.length"
+        >
+          Proceder al Pago
+        </button>
       </div>
     </div>
   </div>
-  
+</div>

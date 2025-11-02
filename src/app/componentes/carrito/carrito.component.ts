@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DetalleCarritoDTO } from '../../dto/carrito/detalleCarrito-dto';
-import { EventoDTO } from '../../dto/evento-dto';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+
 import { ClienteService } from '../../servicios/cliente.service';
 import { TokenService } from '../../servicios/token.service';
-import { CarritoDTO } from '../../dto/carrito/carrito-dto';
 import { PublicoService } from '../../servicios/publico.service';
-import { FormsModule } from '@angular/forms'; 
-import { Router, RouterModule } from '@angular/router';
+
+import { CarritoDTO } from '../../dto/carrito/carrito-dto';
+import { DetalleCarritoDTO } from '../../dto/carrito/detalleCarrito-dto';
+import { EventoDTO } from '../../dto/evento-dto';
 
 @Component({
   selector: 'app-carrito',
@@ -17,189 +19,94 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.css']
 })
-export class CarritoComponent implements OnInit{
-  itemsCarrito!: DetalleCarritoDTO[];
-  carrito!: CarritoDTO;
-  idCuenta!: any;
-  // Mapa para almacenar los nombres de los eventos por idEvento
-  nombresEventos = new Map<string, string>();
-  eventos!: EventoDTO[];
+export class CarritoComponent implements OnInit {
 
+  carrito!: CarritoDTO;
+  itemsCarrito: DetalleCarritoDTO[] = [];
+  eventos: EventoDTO[] = [];
+  idCuenta!: string;
+
+  nombresEventos = new Map<string, string>();
   preciosItem = new Map<string, number>();
 
-  
-  itemsSeleccionados: DetalleCarritoDTO[] = [];
-  textoBtnEliminar: string = '';
-
-  ngOnInit(): void {
-    this.idCuenta = this.tokenService.getIDCuenta();
-    this.publicoService.listarTodosEventos().subscribe({
-      next: (data) => {
-        this.eventos = data.respuesta;
-        this.eventos.forEach(evento => {
-          this.nombresEventos.set(evento.id, evento.nombre);
-        });
-
-      },
-      error: (error) => {
-        console.error( error);
-      }
-    });
-    this.obtenerCarrito();
-  }
   constructor(
     private clienteService: ClienteService,
     private tokenService: TokenService,
     private publicoService: PublicoService,
     private router: Router
-  ) {
-    this.actualizarMensaje();
-    
-  }
-  // Método que se ejecuta al hacer clic en el botón
-  procederAlPago() {
-    // Realiza aquí cualquier acción o validación antes de redirigir
-    if (this.carrito && this.carrito.id) {
-      //console.log('Redirigiendo al pago para la orden:', this.carrito.id);
+  ) {}
 
-      // Navegar a la ruta usando el `Router`
-      this.router.navigate(['/confirmar-orden', this.carrito.id]);
-    } else {
-      console.error('Carrito no encontrado');
-    }
+  ngOnInit(): void {
+    this.idCuenta = this.tokenService.getIDCuenta();
+    this.cargarEventos();
+    this.obtenerCarrito();
   }
 
+  // 🔹 Obtener todos los eventos y guardar sus nombres
+  private cargarEventos() {
+    this.publicoService.listarTodosEventos().subscribe({
+      next: (data) => {
+        this.eventos = data.respuesta;
+        this.eventos.forEach(evento => this.nombresEventos.set(evento.id, evento.nombre));
+      },
+      error: (err) => console.error('Error al cargar eventos:', err)
+    });
+  }
 
-
-
-  public obtenerCarrito() {
-    
+  // 🔹 Cargar el carrito del cliente
+  private obtenerCarrito() {
     this.clienteService.traerCarritoCliente(this.idCuenta).subscribe({
       next: (data) => {
         this.carrito = data.respuesta;
-        this.itemsCarrito = this.carrito.items;
-
-        // Obtener el evento para cada item del carrito
-        this.itemsCarrito.forEach((item) => {
-          this.obtenerEvento(item.idEvento);
-        });
+        this.itemsCarrito = this.carrito.items || [];
       },
-      error: (error) => {
-        console.error(error);
-      },
+      error: (err) => console.error('Error al cargar carrito:', err)
     });
   }
+
+  // 🔹 Actualiza cantidad de entradas en el carrito
   actualizarCantidad(item: DetalleCarritoDTO) {
-    this.obtenerPrecio(item); // Recalcula el precio para el ítem
     this.clienteService.editarItemCarrito(this.carrito.id, item).subscribe({
-      next: (data) => {
-      },
-      error: (error) => {
-        console.error(error);
-      },
+      next: () => console.log('Cantidad actualizada:', item),
+      error: (err) => console.error('Error al actualizar cantidad:', err)
     });
-    console.log('Ítem actualizado:');
   }
 
-
-
-
-
-
-  public obtenerPrecio(item: DetalleCarritoDTO): number {
-    // Verificar si ya tenemos el precio calculado para este ítem
-    if (this.preciosItem.has(item.idEvento)) {
-      return this.preciosItem.get(item.idEvento)! * item.cantidad;
-    }
-  
-    // Buscar el evento en la lista ya cargada en `eventos`
+  // 🔹 Calcula el precio total del ítem
+  obtenerPrecio(item: DetalleCarritoDTO): number {
     const evento = this.eventos.find(e => e.id === item.idEvento);
-    if (evento) {
-      // Encontrar la localidad correcta y su precio
-      const localidad = evento.localidades.find(loc => loc.nombre === item.nombreLocalidad);
-      if (localidad) {
-        const precioTotal = localidad.precio * item.cantidad;
-        this.preciosItem.set(item.idEvento, localidad.precio);
-        return precioTotal;
-      }
-    }
-  
-    // Si no se encuentra el evento o la localidad, devolver 0
-    return 0;
-  }
-  
-  
-  public obtenerEvento(idEvento: string) {
-    // Verificar si el nombre del evento ya está en el mapa para evitar solicitudes duplicadas
-    if (!this.nombresEventos.has(idEvento)) {
-        // Buscar el evento en la lista `eventos`
-        const evento = this.eventos.find(e => e.id === idEvento);
-        if (evento) {
-          const nombreEvento = evento.nombre;
-          this.nombresEventos.set(idEvento, nombreEvento); // Guardar en el mapa para futuros accesos
-    
-  }
-    }
+    const localidad = evento?.localidades.find(l => l.nombre === item.nombreLocalidad);
+    return localidad ? localidad.precio * item.cantidad : 0;
   }
 
-  seleccionarItem(item: DetalleCarritoDTO, estado: boolean) {
-    if (estado) {
-      this.itemsSeleccionados.push(item);
-    } else {
-      const index = this.itemsSeleccionados.indexOf(item);
-      if (index !== -1) {
-        this.itemsSeleccionados.splice(index, 1);
-      }
-    }
-    this.actualizarMensaje();
-  }
-
-  actualizarMensaje() {
-    const cantidad = this.itemsSeleccionados.length;
-    this.textoBtnEliminar = cantidad === 1 ? '1 elemento' : `${cantidad} elementos`;
-  }
-
-  confirmarEliminacion() {
+  // 🔹 Eliminar un ítem del carrito
+  eliminarItem(item: DetalleCarritoDTO) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta acción eliminará los items seleccionados del carrito.',
+      title: '¿Eliminar este ítem?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
       if (result.isConfirmed) {
-        this.eliminarItems();
-        Swal.fire('Eliminados', 'Los items seleccionados han sido eliminados del carrito.', 'success');
+        this.clienteService.eliminarItemCarrito(this.carrito.id, item.idDetalleCarrito).subscribe({
+          next: () => {
+            this.itemsCarrito = this.itemsCarrito.filter(i => i.idDetalleCarrito !== item.idDetalleCarrito);
+            Swal.fire('Eliminado', 'El ítem fue eliminado del carrito', 'success');
+          },
+          error: (err) => console.error('Error al eliminar ítem:', err)
+        });
       }
     });
   }
 
-  eliminarItem(item: DetalleCarritoDTO) {
-    // Implementar lógica para eliminar un solo item si es necesario
-    this.clienteService.eliminarItemCarrito(this.carrito.id, item.idDetalleCarrito).subscribe({
-      next: (data) => {
-        // Guardar el nombre del evento en el mapa
-        this.itemsCarrito = this.itemsCarrito.filter(i => i.idDetalleCarrito !== item.idDetalleCarrito);
-
-      // Actualizar el carrito con los nuevos items
-      this.carrito.items = this.itemsCarrito;
-
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
-
-  eliminarItems() {
-    this.itemsCarrito = this.itemsCarrito.filter(item => !this.itemsSeleccionados.includes(item));
-    this.itemsSeleccionados = [];
-    this.actualizarMensaje();
-  }
-
-  mostrarCarrito() {
-    console.log(this.itemsCarrito);
+  // 🔹 Redirige a la vista de pago
+  procederAlPago() {
+    if (this.carrito?.id) {
+      this.router.navigate(['/confirmar-orden', this.carrito.id]);
+    } else {
+      Swal.fire('Error', 'No se encontró el carrito activo.', 'error');
+    }
   }
 
   trackById(index: number, item: DetalleCarritoDTO) {

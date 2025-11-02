@@ -34,10 +34,28 @@
                     <p><strong>Total Final:</strong> ${{ obtenerValorFinal() }}</p>
                 </div>
                 
-                <!-- Botón de confirmación de pago -->
+                <!-- Botón de confirmación de pago 
                 <div class="d-grid">
                     <button class="btn btn-primary" (click)="crearOrden()">Confirmar Pago</button>
-                </div>
+                </div>-->
+
+                <!-- Botones de acción -->
+<div class="d-grid gap-2 mt-4">
+  <button 
+    class="btn btn-success" 
+    (click)="crearOrden()"
+    [disabled]="idOrden"> <!-- Se desactiva si ya hay una orden creada -->
+    Crear Orden
+  </button>
+
+  <button 
+    class="btn btn-primary"
+    (click)="confirmarPago()"
+    [disabled]="!idOrden"> <!-- Se activa solo si ya hay una orden -->
+    Pagar Orden
+  </button>
+</div>
+
             </div>
         </div>
     </div>

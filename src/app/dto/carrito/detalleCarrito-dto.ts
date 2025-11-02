@@ -4,4 +4,5 @@ export interface DetalleCarritoDTO {
     cantidad: number;
     nombreLocalidad: string;
     precioUnitario:number;
+    sillasSeleccionadas: string[]; // 🔹 NUEVO campo
 }

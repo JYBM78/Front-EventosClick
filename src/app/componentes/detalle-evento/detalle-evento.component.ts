@@ -10,6 +10,8 @@ import { TokenService } from '../../servicios/token.service';
 
 import { InformacionEventoDTO } from '../../dto/informacion-evento-dto';
 import { DetalleCarritoDTO } from '../../dto/carrito/detalleCarrito-dto';
+import { LocalidadDTO } from '../../dto/localidad-dto';
+import { SillaDTO } from '../../dto/Silladto';
 
 @Component({
   selector: 'app-detalle-evento',
@@ -23,8 +25,9 @@ export class DetalleEventoComponent {
   evento!: InformacionEventoDTO;
   idCuenta!: string;
 
-  localidadSeleccionada: any = null;
+  localidadSeleccionada: LocalidadDTO | null = null;
   cantidadSeleccionada: number = 1;
+  sillasSeleccionadas: SillaDTO[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -59,8 +62,29 @@ export class DetalleEventoComponent {
     });
   }
 
+  seleccionarLocalidad(localidad: LocalidadDTO) {
+    this.localidadSeleccionada = localidad;
+    this.sillasSeleccionadas = []; // resetear sillas seleccionadas
+  }
+
+  alternarSeleccionSilla(silla: SillaDTO) {
+    if (!silla.disponible) return; // no permitir selección si no está disponible
+
+    const index = this.sillasSeleccionadas.findIndex(s => s.codigo === silla.codigo);
+    if (index !== -1) {
+      // quitar si ya estaba seleccionada
+      this.sillasSeleccionadas.splice(index, 1);
+    } else {
+      // agregar silla
+      if (this.sillasSeleccionadas.length < this.cantidadSeleccionada) {
+        this.sillasSeleccionadas.push(silla);
+      } else {
+        Swal.fire('Atención', 'Ya seleccionaste el número máximo de sillas.', 'info');
+      }
+    }
+  }
+
   comprarEntradas() {
-    // Validar selección
     if (!this.localidadSeleccionada) {
       Swal.fire('Atención', 'Por favor selecciona una localidad.', 'warning');
       return;
@@ -71,19 +95,23 @@ export class DetalleEventoComponent {
       return;
     }
 
-    // Crear detalle para el carrito
+    if (this.sillasSeleccionadas.length !== this.cantidadSeleccionada) {
+      Swal.fire('Atención', `Debes seleccionar exactamente ${this.cantidadSeleccionada} silla(s).`, 'warning');
+      return;
+    }
+
     const detalleCarrito: DetalleCarritoDTO = {
       idDetalleCarrito: this.generarID(),
       idEvento: this.evento.id,
       cantidad: this.cantidadSeleccionada,
       nombreLocalidad: this.localidadSeleccionada.nombre,
-      precioUnitario: this.localidadSeleccionada.precio
+      precioUnitario: this.localidadSeleccionada.precio ,
+      sillasSeleccionadas: this.sillasSeleccionadas.map(s => s.codigo)
     };
 
-    // Llamar al servicio de cliente para agregar al carrito
     this.clienteService.agregarItemCarritoUnico(this.idCuenta, detalleCarrito).subscribe({
-      next: (data) => {
-        Swal.fire('¡Éxito!', 'La entrada se añadió al carrito.', 'success')
+      next: () => {
+        Swal.fire('¡Éxito!', 'Las entradas fueron añadidas al carrito.', 'success')
           .then(() => this.router.navigate(['/carrito']));
       },
       error: () => Swal.fire('¡Error!', 'No se pudo agregar al carrito.', 'error')

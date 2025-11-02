@@ -11,4 +11,5 @@ export interface InformacionEventoDTO {
    imagenPortada: string;
    imagenLocalidades: string;
    localidades: LocalidadDTO[];
+   
  }

@@ -190,73 +190,85 @@ export class ConfirmarOrdenComponent implements OnInit {
 
   // Método para crear la orden
  public crearOrden() {
-  const idCliente = this.tokenService.getIDCuenta();
+ 
+    //var idOrden = '';
+    const idCliente = this.tokenService.getIDCuenta(); // Obteniendo el ID del cliente desde el token
+    this.orden = {
+      idCliente: idCliente,
+      //fechaVencimiento: new Date(), // Puedes ajustar la fecha según lo necesites
+      codigoPasarela: 'CODIGO_PASARELA', // Reemplaza con el código de la pasarela de pago si es necesario
+      total: Number(this.obtenerValorFinal()),
+      items: this.detallesOrden,
+      idCupon: this.codigoCupon || 'no hay'
+    };
 
-  this.orden = {
-    idCliente: idCliente,
-    codigoPasarela: 'CODIGO_PASARELA',
-    total: Number(this.obtenerValorFinal()),
-    items: this.detallesOrden,
-    idCupon: this.codigoCupon || 'no hay'
-  };
+   
+    this.clienteService.crearOrden(this.orden).subscribe({
+      
+      next: (respuesta) => {
+        if (!respuesta.error) {
+          
+          // console.log(respuesta);
+          // alert(respuesta); // Muestra mensaje de éxito
+           var res = String(respuesta.respuesta) ;
+           alert(res);
 
-this.clienteService.crearOrden(this.orden).subscribe({
-  next: (respuesta) => {
-    if (!respuesta.error) {
-      const res = String(respuesta.respuesta);
-      alert("✅ Orden creada exitosamente");
-      this.idOrden = String(res.split("-")[1]);
-      const idLimpio = this.idOrden.replace("ID:", "").trim();
-      this.idOrden = idLimpio;
-      console.log("Orden creada con ID:", this.idOrden);
-    } else {
-      alert("❌ Error al crear la orden: " + respuesta.error);
-    }
-  },
-  error: (error) => {
-    console.error("❌ Error detallado:", error);
+           this.idOrden = String(res.split("-")[1]);
+          
+           
+           this.clienteService.realizarPago(this.idOrden).subscribe({
+            next: (respuesta: MensajeDTO) => {
+              if (!respuesta.error) {
+                //this.cuponInfo = respuesta.respuesta;
+                //alert(respuesta.respuesta); // Muestra mensaje de éxito
+                console.log(respuesta);
+              
+                
+                window.location.href = respuesta.respuesta.initPoint;
+              } else {
+                alert(respuesta.error); // Muestra mensaje de error
+              }
+            },
+            error: (error) => {
+              alert('Ocurrió un error psarela'); // Manejo de error en caso de fallo de la solicitud
+              console.error(error);
+            }
+          });
 
-    // Verifica si el backend envía un mensaje específico
-    if (error?.error?.respuesta) {
-      alert("⚠️ Error del servidor: " + error.error.respuesta);
-    } else if (error?.message) {
-      alert("⚠️ Error de red: " + error.message);
-    } else {
-      alert("⚠️ Error desconocido al crear la orden.");
-    }
+         } 
+      },
+      error: (error) => {
+        alert('Ocurrió un error de pago'); // Manejo de error en caso de fallo de la solicitud
+        console.error(error);
+      },
+    });
+    
+
+    console.log("Orden creada:", this.orden);
   }
-});
-
-
-  
-}
-
 
   public obtenerValorFinal():Number{
     return this.calcularTotalPagado(this.carritoCompra.items)-this.descuentoAplicable;
    }
 
-  public confirmarPago() {
-  if (!this.idOrden) {
-    alert("Primero debes crear la orden antes de pagar.");
-    return;
-  }
-  
-
-  this.clienteService.realizarPago(this.idOrden).subscribe({
-    next: (respuesta: MensajeDTO) => {
-      if (!respuesta.error) {
-        console.log("Redirigiendo a pasarela:", respuesta.respuesta);
-        window.location.href = respuesta.respuesta.initPoint;
-      } else {
-        alert("Error al procesar el pago: " + respuesta.error);
+  confirmarPago() {
+    this.clienteService.realizarPago(this.idOrden).subscribe({
+      next: (respuesta: MensajeDTO) => {
+        if (!respuesta.error) {
+          //this.cuponInfo = respuesta.respuesta;
+          //alert(respuesta.respuesta); // Muestra mensaje de éxito
+          console.log(respuesta);
+        } else {
+          alert(respuesta.error); // Muestra mensaje de error
+        }
+      },
+      error: (error) => {
+        alert('Ocurrió un error psarela'); // Manejo de error en caso de fallo de la solicitud
+        console.error(error);
       }
-    },
-    error: (error) => {
-      alert("⚠️ Error al conectar con la pasarela de pago");
-      console.error(error);
-    }
-  });
-}
-
+    });
+   //this.crearOrden();
+    alert('Pago confirmado. Gracias por su compra.');
+    // Aquí puedes agregar la lógica para finalizar el proceso de pago y enviar la orden
+  }
 }
