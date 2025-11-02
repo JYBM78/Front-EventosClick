@@ -54,6 +54,7 @@ export class DetalleEventoComponent {
       next: (data) => {
         if (data && data.respuesta) {
           this.evento = data.respuesta;
+          
         } else {
           Swal.fire('¡Error!', 'No se pudo cargar el evento.', 'error');
         }
@@ -64,18 +65,19 @@ export class DetalleEventoComponent {
 
   seleccionarLocalidad(localidad: LocalidadDTO) {
     this.localidadSeleccionada = localidad;
-    this.sillasSeleccionadas = []; // resetear sillas seleccionadas
+    this.sillasSeleccionadas = [];
   }
 
   alternarSeleccionSilla(silla: SillaDTO) {
-    if (!silla.disponible) return; // no permitir selección si no está disponible
+    if (!silla.disponible) {
+      Swal.fire('Silla ocupada', 'Esta silla no está disponible.', 'warning');
+      return;
+    }
 
     const index = this.sillasSeleccionadas.findIndex(s => s.codigo === silla.codigo);
     if (index !== -1) {
-      // quitar si ya estaba seleccionada
       this.sillasSeleccionadas.splice(index, 1);
     } else {
-      // agregar silla
       if (this.sillasSeleccionadas.length < this.cantidadSeleccionada) {
         this.sillasSeleccionadas.push(silla);
       } else {
@@ -90,11 +92,6 @@ export class DetalleEventoComponent {
       return;
     }
 
-    if (this.cantidadSeleccionada < 1) {
-      Swal.fire('Atención', 'La cantidad debe ser al menos 1.', 'warning');
-      return;
-    }
-
     if (this.sillasSeleccionadas.length !== this.cantidadSeleccionada) {
       Swal.fire('Atención', `Debes seleccionar exactamente ${this.cantidadSeleccionada} silla(s).`, 'warning');
       return;
@@ -105,7 +102,7 @@ export class DetalleEventoComponent {
       idEvento: this.evento.id,
       cantidad: this.cantidadSeleccionada,
       nombreLocalidad: this.localidadSeleccionada.nombre,
-      precioUnitario: this.localidadSeleccionada.precio ,
+      precioUnitario: this.localidadSeleccionada.precio,
       sillasSeleccionadas: this.sillasSeleccionadas.map(s => s.codigo)
     };
 

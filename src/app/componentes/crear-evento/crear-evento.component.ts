@@ -6,6 +6,7 @@ import { EventoDTO } from '../../dto/evento-dto';
 import { PublicoService } from '../../servicios/publico.service';
 import { AdministradorService } from '../../servicios/administrador.service';
 import { CrearEventoDTO } from '../../dto/crear-evento-dto';
+import { Router } from '@angular/router';
 
 
 
@@ -42,6 +43,7 @@ export class CrearEventoComponent {
         Swal.fire("Error!", error.error.respuesta, "error");
       }
     });
+    this.router.navigate(['/gestion-eventos']);
    
    
    }
@@ -52,7 +54,7 @@ export class CrearEventoComponent {
    
  
 
-constructor(private formBuilder: FormBuilder,private publicoService: PublicoService,private adminService: AdministradorService ) {
+constructor(private formBuilder: FormBuilder,private publicoService: PublicoService,private adminService: AdministradorService,private router: Router ) {
  this.crearFormulario();
  this.tiposDeEvento = ['Concierto', 'Fiesta', 'Teatro', 'Deportes'];
  this.ciudades = ['armenia', 'cartagena', 'pereira', 'cali'];
