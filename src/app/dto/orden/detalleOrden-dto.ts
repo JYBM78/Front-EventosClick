@@ -4,5 +4,6 @@ export interface DetalleOrdenDTO {
     precio:number,
     nombreLocalidad:string,
     cantidad:number
+    sillasSeleccionadas: string[];
     
   }

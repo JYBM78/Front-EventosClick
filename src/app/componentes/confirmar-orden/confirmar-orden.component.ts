@@ -171,7 +171,8 @@ export class ConfirmarOrdenComponent implements OnInit {
         
           precio: this.preciosItem.get(item.idEvento) ?? item.precioUnitario,
           nombreLocalidad: item.nombreLocalidad,
-          cantidad: item.cantidad
+          cantidad: item.cantidad,
+          sillasSeleccionadas: item.sillasSeleccionadas
         };
     
         //console.log(detalleOrden.nombreLocalidad,detalleOrden.idEvento)

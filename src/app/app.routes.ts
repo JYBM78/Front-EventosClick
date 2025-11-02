@@ -21,14 +21,18 @@ import { NuevaContraseniaComponent } from './componentes/nueva-contrasenia/nueva
 import { CambiarContraseniaOlvidadaComponent } from './componentes/cambiar-contrasenia-olvidada/cambiar-contrasenia-olvidada.component';
 import { CambiarContraseniaComponent } from './componentes/cambiar-contrasenia/cambiar-contrasenia.component';
 import { PrivacidadDatosComponent } from './componentes/privacidad-datos/privacidad-datos.component';
+import { PagoExitosoComponent } from './componentes/pago-exitoso/pago-exitoso.component';
+import { PagoFallidoComponent } from './componentes/pago-fallido/pago-fallido.component';
+import { PagoPendienteComponent } from './componentes/pago-pendiente/pago-pendiente.component';
 
 
 
 export const routes: Routes = [
     { path: '', component: InicioComponent },  // Ruta raíz
-   // { path: 'pago-exitoso',component: PagoExitosoComponent },
-  //{ path: 'pago-fallido',component: PagoFallidoComponent },
-  //{ path: 'pago-pendiente',component: PagoPendienteComponent },
+   
+    { path: 'pago-exitoso',component: PagoExitosoComponent },
+  { path: 'pago-fallido',component: PagoFallidoComponent },
+  { path: 'pago-pendiente',component: PagoPendienteComponent },
   { path: 'cambiar-contrasenia/:id', component: CambiarContraseniaComponent },
 
   { path: 'privacidad-datos', component: PrivacidadDatosComponent },
