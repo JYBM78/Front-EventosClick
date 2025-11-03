@@ -14,7 +14,7 @@ export class PublicoService {
 
 
 
- private publicoURL = "https://eventosclick.onrender.com/api/general";
+ private publicoURL = "https://eventosclick-backend-817359746437.southamerica-east1.run.app/api/general";
 
  
 

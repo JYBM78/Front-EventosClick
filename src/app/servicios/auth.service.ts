@@ -14,8 +14,8 @@ export class AuthService {
 
 
   
- private authURL = "https://eventosclick.onrender.com/api/auth";
- //private authURL = "http://localhost:8080/api/auth";
+ //private authURL = "https://eventosclick.onrender.com/api/auth";
+ private authURL = "https://eventosclick-backend-817359746437.southamerica-east1.run.app/api/auth";
  
 
 

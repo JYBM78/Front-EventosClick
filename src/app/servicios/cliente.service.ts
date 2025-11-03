@@ -17,7 +17,7 @@ import { TipoEventoDTO } from '../dto/tipo-evento-dto';
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiURL = "https://eventosclick.onrender.com/api/cliente";
+  private apiURL = "https://eventosclick-backend-817359746437.southamerica-east1.run.app/api/cliente";
 
   private getAuthHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('AuthToken');

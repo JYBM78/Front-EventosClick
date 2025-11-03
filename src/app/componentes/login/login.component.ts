@@ -24,7 +24,8 @@ token: string | null = null;
 siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
 onCaptchaSuccess(token: string) {
-  this.http.post<any>('https://eventosclick.onrender.com/api/general/validate', { token }).subscribe({
+  this.http.post<any>('https://eventosclick-backend-817359746437.southamerica-east1.run.app/api/general/validate', { token }).subscribe({
+    //this.http.post<any>('https://eventosclick.onrender.com/api/general/validate', { token }).subscribe({
     next: (data) => {
       // data tiene la estructura { error: false, respuesta: true/false }
       const isValid = data.respuesta;

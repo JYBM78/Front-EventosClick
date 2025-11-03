@@ -14,8 +14,8 @@ export class AdministradorService {
 
 
   
- private adminURL = "https://eventosclick.onrender.com/api/admin";
- //private adminURL = "http://localhost:8080/api/admin";
+ //private adminURL = "https://eventosclick.onrender.com/api/admin";
+ private adminURL = "https://eventosclick-backend-817359746437.southamerica-east1.run.app/api/admin";
 
 
  constructor(private http: HttpClient) { }
