@@ -39,7 +39,7 @@ RUN echo 'server { \
 }' > /etc/nginx/conf.d/default.conf
 
 # Copiar el build generado por Angular
-COPY --from=build /app/dist/front-eventos-click /usr/share/nginx/html
+COPY --from=build /app/dist/front-eventos-click/browser /usr/share/nginx/html
 
 # Exponer el puerto
 EXPOSE 8080
