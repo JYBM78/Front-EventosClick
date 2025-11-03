@@ -16,7 +16,7 @@ RUN npm install
 COPY . .
 
 # Construir la aplicación Angular para producción
-RUN npm run build --configuration production
+RUN npm run build 
 
 # ===============================
 # Etapa 2: Servir el build con NGINX
