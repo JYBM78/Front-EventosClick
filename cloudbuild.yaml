@@ -29,7 +29,7 @@ steps:
       [
         'run', 'deploy', 'front-eventos-click',
         '--image', 'gcr.io/$PROJECT_ID/front-eventos-click',
-        '--region', 'us-central1',
+        '--region', 'northamerica-northeast1',
         '--platform', 'managed',
         '--allow-unauthenticated',
         '--quiet'
