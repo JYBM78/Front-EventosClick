@@ -1,26 +1,36 @@
+# Cloud Build configuration para Front-EventosClick
+
+options:
+  logging: CLOUD_LOGGING_ONLY  # Solo enviar logs a Cloud Logging
+
+substitutions:
+  _BRANCH_NAME: "GoogleCloud"
+
+# Imágenes que se construirán y subirán
+images:
+  - 'gcr.io/$PROJECT_ID/front-eventos-click'
+
 steps:
   # Paso 1: Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build Docker Image'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/front-eventos-click', '.']
 
   # Paso 2: Publicar la imagen en Container Registry
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push Docker Image'
     args: ['push', 'gcr.io/$PROJECT_ID/front-eventos-click']
 
   # Paso 3: Desplegar en Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    id: 'Deploy to Cloud Run'
+    entrypoint: 'gcloud'
     args:
       [
         'run', 'deploy', 'front-eventos-click',
         '--image', 'gcr.io/$PROJECT_ID/front-eventos-click',
         '--region', 'us-central1',
         '--platform', 'managed',
-        '--allow-unauthenticated'
+        '--allow-unauthenticated',
+        '--quiet'
       ]
-
-images:
-  - 'gcr.io/$PROJECT_ID/front-eventos-click'
-
-substitutions:
-  _BRANCH_NAME: "GoogleCloud"
