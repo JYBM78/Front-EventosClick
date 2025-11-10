@@ -36,6 +36,17 @@ export class DetalleEventoComponent {
     private clienteService: ClienteService,
     private tokenService: TokenService
   ) {}
+obtenerFilas(sillas: any[]): any[][] {
+  const filas: any[][] = [];
+  const porFila = 15; // número de sillas por fila
+
+  for (let i = 0; i < sillas.length; i += porFila) {
+    filas.push(sillas.slice(i, i + porFila));
+  }
+  return filas;
+}
+
+
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {

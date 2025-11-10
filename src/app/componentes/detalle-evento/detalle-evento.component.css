@@ -32,3 +32,90 @@
   color: black;
   transform: scale(1.1);
 }
+
+.mapa-cine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.pantalla {
+  background: linear-gradient(to bottom, #6c757d, #343a40);
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  padding: 8px 0;
+  width: 70%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contenedor-salas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* Cada fila de sillas */
+.fila {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Sillas */
+.silla {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Estados */
+.silla.disponible {
+  background-color: #198754;
+  color: white;
+}
+
+.silla.ocupada {
+  background-color: #6c757d;
+  color: white;
+  cursor: not-allowed;
+}
+
+.silla.seleccionada {
+  background-color: #ffc107;
+  color: black;
+}
+
+/* Pequeña curva en filas, como en un cine */
+.fila:nth-child(1) { transform: scale(0.9); }
+.fila:nth-child(2) { transform: scale(0.92); }
+.fila:nth-child(3) { transform: scale(0.94); }
+.fila:nth-child(4) { transform: scale(0.96); }
+.fila:nth-child(5) { transform: scale(0.98); }
+.fila:nth-child(6) { transform: scale(1); }
+.fila:nth-child(7) { transform: scale(1.02); }
+.fila:nth-child(8) { transform: scale(1.04); }
+.fila:nth-child(9) { transform: scale(1.06); }
+.fila:nth-child(10) { transform: scale(1.08); }
+
+.leyenda {
+  margin-top: 15px;
+}
+

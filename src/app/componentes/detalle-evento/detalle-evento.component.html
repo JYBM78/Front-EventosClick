@@ -1,15 +1,19 @@
-<div class="container" *ngIf="evento">
+<div class="container mt-4" *ngIf="evento">
   <!-- CABECERA DEL EVENTO -->
-  <div class="card mb-4">
+  <div class="card mb-4 shadow-sm">
     <div class="card-header text-center bg-primary text-white">
-      <h2>Detalle del Evento</h2>
+      <h2>{{ evento.nombre }}</h2>
     </div>
-    <div class="card-body row">
+    <div class="card-body row align-items-center">
       <div class="col-md-4 text-center">
-        <img [src]="evento.imagenPortada" alt="Imagen del Evento" class="img-fluid rounded">
+        <img
+          [src]="evento.imagenPortada"
+          alt="Imagen del Evento"
+          class="img-fluid rounded shadow-sm"
+          style="max-height: 250px; object-fit: cover;"
+        />
       </div>
       <div class="col-md-8">
-        <h3 class="card-title">{{ evento.nombre }}</h3>
         <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
         <p><strong>Ciudad:</strong> {{ evento.ciudad }}</p>
         <p><strong>Fecha:</strong> {{ evento.fechaEvento | date: 'dd MMMM, yyyy' }}</p>
@@ -18,15 +22,26 @@
     </div>
   </div>
 
-  <!-- LISTA DE LOCALIDADES -->
-  <div class="card mb-4" *ngIf="evento.localidades?.length">
-    <div class="card-header bg-secondary text-white">
-      <h4 class="mb-0">Capacidad Disponible por Localidad</h4>
+  <!-- SECCIÓN DE LOCALIDADES -->
+  <div class="card mb-4 shadow-sm" *ngIf="evento.localidades?.length">
+    <div class="card-header bg-secondary text-white text-center">
+      <h4 class="mb-0">Mapa de Localidades</h4>
     </div>
 
-    <div class="card-body p-4">
-      <div class="table-responsive">
-        <table class="table table-bordered text-center">
+    <div class="card-body text-center">
+      <!-- Imagen o esquema visual de localidades -->
+      <div class="mb-4">
+        <img
+          [src]="evento.imagenLocalidades"
+          alt="Mapa de localidades"
+          class="img-fluid rounded shadow-sm"
+          style="max-height: 400px;"
+        />
+      </div>
+
+      <!-- Tabla con detalles -->
+      <div class="table-responsive mt-3">
+        <table class="table table-bordered text-center align-middle">
           <thead class="table-dark">
             <tr>
               <th>Localidad</th>
@@ -37,7 +52,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let localidad of evento.localidades">
-              <td>{{ localidad.nombre }}</td>
+              <td class="fw-bold">{{ localidad.nombre }}</td>
               <td>{{ localidad.precio | currency:'COP':'symbol':'1.0-0' }}</td>
               <td>{{ localidad.capacidadMaxima }}</td>
               <td>
@@ -69,17 +84,17 @@
     </div>
   </div>
 
-  <!-- SELECCIÓN DE LOCALIDAD Y SILLAS -->
-  <div class="card mb-4" *ngIf="localidadSeleccionada">
+  <!-- DETALLE DE LOCALIDAD SELECCIONADA -->
+  <div class="card shadow-sm mb-4" *ngIf="localidadSeleccionada">
     <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-      <h4 class="mb-0">Localidad Seleccionada: {{ localidadSeleccionada.nombre }}</h4>
+      <h4 class="mb-0">Localidad: {{ localidadSeleccionada.nombre }}</h4>
       <div>
-        <label class="me-2"><strong>Cantidad:</strong></label>
+        <label class="me-2 fw-bold">Cantidad:</label>
         <input
           type="number"
           min="1"
           [(ngModel)]="cantidadSeleccionada"
-          class="form-control d-inline-block"
+          class="form-control d-inline-block text-center"
           style="width: 80px;"
         />
       </div>
@@ -88,31 +103,38 @@
     <div class="card-body text-center">
       <p><strong>Precio por entrada:</strong> {{ localidadSeleccionada.precio | currency:'COP':'symbol':'1.0-0' }}</p>
 
-      <!-- MAPA DE SILLAS -->
-      <div class="sala-container mt-4">
-        <div
-          *ngFor="let silla of localidadSeleccionada.sillas"
-          (click)="alternarSeleccionSilla(silla)"
-          [class.silla]="true"
-          [class.disponible]="silla.disponible"
-          [class.ocupada]="!silla.disponible"
-          [class.seleccionada]="sillasSeleccionadas.includes(silla)"
-        >
-          {{ silla.codigo }}
-        </div>
-      </div>
+<!-- MAPA DE SILLAS -->
+<div class="mapa-cine mt-4">
+  <div class="pantalla text-center mb-4">ESCENARIO</div>
 
-      <!-- LEYENDA -->
-      <div class="mt-4">
-        <span class="badge bg-success me-2">Disponible</span>
-        <span class="badge bg-warning text-dark me-2">Seleccionada</span>
-        <span class="badge bg-secondary">Ocupada</span>
+  <div class="contenedor-salas">
+    <div class="fila"
+      *ngFor="let fila of obtenerFilas(localidadSeleccionada.sillas)">
+      <div
+        *ngFor="let silla of fila"
+        (click)="alternarSeleccionSilla(silla)"
+        [class.silla]="true"
+        [class.disponible]="silla.disponible"
+        [class.ocupada]="!silla.disponible"
+        [class.seleccionada]="sillasSeleccionadas.includes(silla)"
+      >
+        {{ silla.codigo }}
       </div>
     </div>
+  </div>
+
+  <!-- LEYENDA -->
+  <div class="leyenda mt-4 text-center">
+    <span class="badge bg-success me-2">Disponible</span>
+    <span class="badge bg-warning text-dark me-2">Seleccionada</span>
+    <span class="badge bg-secondary">Ocupada</span>
+  </div>
+</div>
+
 
     <!-- BOTÓN DE COMPRA -->
     <div class="card-footer text-center">
-      <button (click)="comprarEntradas()" class="btn btn-success btn-lg">
+      <button (click)="comprarEntradas()" class="btn btn-success btn-lg px-4">
         Añadir al carrito
       </button>
     </div>
